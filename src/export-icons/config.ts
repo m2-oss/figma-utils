@@ -9,6 +9,7 @@ export interface SrcSchemaConfig {
 export interface SrcImageConfig {
   figmaProjectID:string;
   frameID:string;
+  dstPath:string;
   scale?: number;
   format?:Format;
 }

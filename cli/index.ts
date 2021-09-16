@@ -1,9 +1,9 @@
 import { Cli } from 'clipanion';
-import { Schema } from './commands/schema';
+import { LoadSchema } from './commands/load-schema';
 import {LoadImage} from "./commands/load-image";
 
 const cli = new Cli();
-cli.register(Schema);
+cli.register(LoadSchema);
 cli.register(LoadImage);
 cli.runExit(process.argv.slice(2), {
   stdin: process.stdin,

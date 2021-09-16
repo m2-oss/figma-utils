@@ -1,13 +1,14 @@
 import { Command, Option } from 'clipanion';
 import { loadMinifiedSchema, SrcSchemaConfig } from '../../src/index';
+import {loadJson} from "../common/json-utils";
 
-export class Schema extends Command {
-    config = Option.String('--config');
+export class LoadSchema extends Command {
+    config = Option.String('--config',{required:true});
 
-    static paths = [['schema']];
+    static paths = [['load-schema']];
 
     async execute() {
-      const config:SrcSchemaConfig = JSON.parse(this.config || '');
+      const config:SrcSchemaConfig = await loadJson(this.config);
       if (!process.env.X_FIGMA_TOKEN) {
         throw new Error('X_FIGMA_TOKEN does not define');
       }

@@ -8,7 +8,7 @@ https://www.figma.com/file/3SigPKK9cQhANSRQOOgQgO/
 You need to write figma token in environmental vars. Put the value in `.env` file 
 (use `.env.example` for example)
 
-## Load Minified Schema from Figma
+## Load Minified LoadSchema from Figma
 
 ### Loading from code:
 
@@ -19,7 +19,11 @@ loadMinifiedSchema(config, figmaToken);
 ### loading from cli
 
 `
-yarn cli schema --config '{"figmaProjectID":"3SigPKK9cQhANSRQOOgQgO", "page":"Colored Icons", "frameName":"Common"}'
+yarn cli load-schema --config '{"figmaProjectID":"3SigPKK9cQhANSRQOOgQgO", "page":"Colored Icons", "frameName":"Common"}'
+`
+
+`
+yarn cli load-schema --config './cli/configs/load-schema.json'
 `
 ## Loading image from Figma
 
@@ -30,5 +34,9 @@ if you need cache files for loading use CACHE_DIR var in `.env` file.
 
 ### loading from cli
 `
-yarn cli load-image --src-config '{"figmaProjectID":"3SigPKK9cQhANSRQOOgQgO", "frameID":"1:153"}' --dst 3.svg
+yarn cli load-image --config '{"figmaProjectID":"3SigPKK9cQhANSRQOOgQgO", "frameID":"1:153", "dstPath":"3.svg"}'
+`
+
+`
+yarn cli load-image --config './cli/configs/load-image.json'
 `
