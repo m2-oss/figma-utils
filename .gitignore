@@ -1,0 +1,42 @@
+# dependencies
+node_modules
+
+# testing
+coverage
+
+# production
+build
+build-standalone
+dist
+.cache
+
+# misc
+.idea
+.vscode
+.DS_Store
+.env*
+!.env.example
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+public
+migrations/*.json
+cms-sync-diff.*
+
+/backup
+stories.json
+test-screenshots
+screenshot-tests.diff.json
+bundle-size.json
+statoscope-report.json
+.eslintcache
+cms-data
+*.log
+.ultra.cache.json
+.history
+webpack.stats.json*
+demo-*.json
+/migrations/*.json
