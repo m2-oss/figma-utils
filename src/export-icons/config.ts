@@ -1,4 +1,4 @@
-export type Format = 'svg'| 'png';
+export type Format = "svg" | "png";
 
 export interface SrcSchemaConfig {
   figmaProjectID: string;
@@ -7,9 +7,9 @@ export interface SrcSchemaConfig {
 }
 
 export interface SrcImageConfig {
-  figmaProjectID:string;
-  frameID:string;
-  dstPath:string;
+  figmaProjectID: string;
+  frameID: string;
+  dstPath: string;
   scale?: number;
-  format?:Format;
+  format?: Format;
 }

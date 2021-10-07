@@ -7,95 +7,96 @@ import { SrcSchemaConfig } from "./config";
 const translit = new Translit();
 
 interface BoundingBox {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 interface MinifiedItem {
-    hash: string;
-    id: string;
-    name: string;
-    absoluteBoundingBox: BoundingBox;
-    url?: string;
+  hash: string;
+  id: string;
+  name: string;
+  absoluteBoundingBox: BoundingBox;
+  url?: string;
 }
 
 export interface MinifiedSchema {
-    name: string;
-    version: string;
-    lastModified: string;
-    children: MinifiedItem[];
+  name: string;
+  version: string;
+  lastModified: string;
+  children: MinifiedItem[];
 }
 
 async function loadFigmaSchema(figmaId: string, xFigmaToken: string) {
-    return (
-        await axios.get(`https://api.figma.com/v1/files/${figmaId}`, {
-            headers: { "X-Figma-Token": xFigmaToken },
-        })
-    ).data;
+  return (
+    await axios.get(`https://api.figma.com/v1/files/${figmaId}`, {
+      headers: { "X-Figma-Token": xFigmaToken },
+    })
+  ).data;
 }
 
 export async function loadMinifiedSchema(
-    config: SrcSchemaConfig,
-    xFigmaToken: string
+  config: SrcSchemaConfig,
+  xFigmaToken: string
 ): Promise<MinifiedSchema> {
-    const schema = await loadFigmaSchema(config.figmaProjectID, xFigmaToken);
+  const schema = await loadFigmaSchema(config.figmaProjectID, xFigmaToken);
 
-    const children = schema.document.children
-        .filter((item: { name: string }) => config.page === item.name.trim())[0]
-        .children.filter(
-            (item: { name: string; type: string }) =>
-                (item.type === "FRAME" ||
-                    item.type === "COMPONENT" ||
-                    item.type === "COMPONENT_SET") &&
-                config.frameName.indexOf(item.name) >= 0
-        )
-        .reduce(
-            (acc: any[], item: { children: any[]; name: string }) => [
-                ...acc,
-                ...item.children.map((i) => ({ ...i, sourceFrame: item.name })),
-            ],
-            []
-        )
-        .filter(
-            (item: { name: string; type: string }) =>
-                item.type === "FRAME" || item.type === "COMPONENT"
-        )
-        .map(
-            (item: {
-                name: string;
-                id: string;
-                absoluteBoundingBox: any;
-                sourceFrame: string;
-            }) => {
-                const regex = /\s/gi;
-                const array = translit
-                    .transform(item.name)
-                    .split("/")
-                    .map((i) =>
-                        i
-                            .trim()
-                            .replace(regex, "-")
-                            .toLowerCase()
-                            .replace(/^type=/, "") // Странный префикс в исходнике
-                    );
-                const name = array.join("--");
-                const str = JSON.stringify(item);
-                const hash = md5(str + JSON.stringify(config));
-                const { absoluteBoundingBox } = item;
-                const resultItem: MinifiedItem = {
-                    id: item.id,
-                    name,
-                    hash,
-                    absoluteBoundingBox,
-                };
-                return resultItem;
-            }
-        );
-    return {
-        name: schema.name,
-        version: schema.version,
-        lastModified: schema.lastModified,
-        children,
-    };
+  const children = schema.document.children
+    .filter((item: { name: string }) => config.page === item.name.trim())[0]
+    .children.filter(
+      (item: { name: string; type: string }) =>
+        (item.type === "FRAME" ||
+          item.type === "COMPONENT" ||
+          item.type === "COMPONENT_SET") &&
+        config.frameName.indexOf(item.name) >= 0
+    )
+    .reduce(
+      (acc: any[], item: { children: any[]; name: string }) => [
+        ...acc,
+        ...item.children.map((i) => ({ ...i, sourceFrame: item.name })),
+      ],
+      []
+    )
+    .filter(
+      (item: { name: string; type: string }) =>
+        item.type === "FRAME" || item.type === "COMPONENT"
+    )
+    .map(
+      (item: {
+        name: string;
+        id: string;
+        absoluteBoundingBox: any;
+        sourceFrame: string;
+      }) => {
+        const regex = /\s/gi;
+        const array = translit
+          .transform(item.name)
+          .split("/")
+          .map(
+            (i) =>
+              i
+                .trim()
+                .replace(regex, "-")
+                .toLowerCase()
+                .replace(/^type=/, "") // Странный префикс в исходнике
+          );
+        const name = array.join("--");
+        const str = JSON.stringify(item);
+        const hash = md5(str + JSON.stringify(config));
+        const { absoluteBoundingBox } = item;
+        const resultItem: MinifiedItem = {
+          id: item.id,
+          name,
+          hash,
+          absoluteBoundingBox,
+        };
+        return resultItem;
+      }
+    );
+  return {
+    name: schema.name,
+    version: schema.version,
+    lastModified: schema.lastModified,
+    children,
+  };
 }

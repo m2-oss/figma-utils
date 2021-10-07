@@ -1,6 +1,7 @@
-import { Cli } from 'clipanion';
-import { LoadSchema } from './commands/load-schema';
-import {LoadImage} from "./commands/load-image";
+import { Cli } from "clipanion";
+
+import { LoadSchema } from "./commands/load-schema";
+import { LoadImage } from "./commands/load-image";
 
 const cli = new Cli();
 cli.register(LoadSchema);
