@@ -18,6 +18,10 @@
     "noUnusedParameters": true,
     "strictNullChecks": true,
     "noImplicitThis": true,
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "strict": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

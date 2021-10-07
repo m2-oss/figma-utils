@@ -1,19 +1,25 @@
 {
   "name": "figma-utils",
   "version": "1.0.0",
-  "description": "Various utilities for working with figma, for exporting icons, styles, etc.",
+  "description": "Various utilities for working with figma, for extracting icons, styles, etc.",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": "https://github.com/m2-oss/figma-utils.git",
   "author": "Sergey Chernov <chernov.sergey@gmail.com>",
   "license": "MIT",
   "private": null,
+  "keywords": ["figma", "extract", "import", "icons", "images"],
   "scripts": {
-    "lint": "eslint --fix -c .eslintrc.json 'src/**/*.ts'",
-    "cli": "ts-node -r dotenv/config cli/index.ts"
+    "lint": "eslint -c .eslintrc.json 'src/**/*.ts'",
+    "format": "eslint --fix -c .eslintrc.json 'src/**/*.ts'",
+    "cli": "ts-node -r dotenv/config cli/index.ts",
+    "build": "tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run lint"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint"
+      "pre-commit": "format"
     }
   },
   "devDependencies": {
