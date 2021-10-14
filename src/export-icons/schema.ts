@@ -27,6 +27,20 @@ export interface MinifiedSchema {
   children: MinifiedItem[];
 }
 
+export const itemKey = (item: MinifiedItem) => md5(`${item.name}-${item.id}`);
+
+export function convertSchemaToHashMap(schema: MinifiedSchema): {
+  [name: string]: string;
+} {
+  const result: {
+    [name: string]: string;
+  } = {};
+  for (const child of schema.children) {
+    result[itemKey(child)] = child.hash;
+  }
+  return result;
+}
+
 async function loadFigmaSchema(figmaId: string, xFigmaToken: string) {
   return (
     await axios.get(`https://api.figma.com/v1/files/${figmaId}`, {

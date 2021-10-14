@@ -1,10 +1,13 @@
 import { Command, Option } from "clipanion";
 
+import { convertSchemaToHashMap } from "../../src/export-icons/schema";
 import { loadMinifiedSchema, SrcSchemaConfig } from "../../src/index";
 import { loadJson } from "../common/json-utils";
 
 export class LoadSchema extends Command {
   config = Option.String("--config", { required: true });
+
+  hash = Option.Boolean("--hash");
 
   static paths = [["load-schema"]];
 
@@ -17,6 +20,12 @@ export class LoadSchema extends Command {
       config,
       process.env.X_FIGMA_TOKEN
     );
-    console.log(JSON.stringify(minifiedSchema, null, "\t"));
+    if (this.hash) {
+      console.log(
+        JSON.stringify(convertSchemaToHashMap(minifiedSchema), null, "\t")
+      );
+    } else {
+      console.log(JSON.stringify(minifiedSchema, null, "\t"));
+    }
   }
 }
