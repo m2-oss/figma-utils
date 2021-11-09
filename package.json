@@ -8,14 +8,21 @@
   "author": "Sergey Chernov <chernov.sergey@gmail.com>",
   "license": "MIT",
   "private": null,
-  "keywords": ["figma", "extract", "import", "icons", "images"],
+  "keywords": [
+    "figma",
+    "extract",
+    "import",
+    "icons",
+    "images"
+  ],
   "scripts": {
-    "lint": "eslint -c .eslintrc.json 'src/**/*.ts'",
-    "format": "eslint --fix -c .eslintrc.json 'src/**/*.ts'",
-    "cli": "ts-node -r dotenv/config cli/index.ts",
+    "lint": "eslint 'src/**/*.ts' 'cli/**/*.ts'",
+    "format": "eslint --fix 'src/**/*.ts' 'cli/**/*.ts'",
+    "cli": "ts-node --project tsconfig.json -r dotenv/config cli/index.ts",
     "build": "tsc",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run lint"
+    "prepublishOnly": "npm run lint",
+    "typecheck": "yarn tsc --noEmit --incremental false"
   },
   "husky": {
     "hooks": {
@@ -23,6 +30,7 @@
     }
   },
   "devDependencies": {
+    "@m2-oss/web-configs": "^0.1.0",
     "@types/md5": "^2.3.1",
     "@types/node": "^16.9.1",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
@@ -42,6 +50,7 @@
   "dependencies": {
     "axios": "^0.21.4",
     "cyrillic-to-translit-js": "^3.1.0",
-    "md5": "^2.3.0"
+    "md5": "^2.3.0",
+    "svg-render": "^1.2.0"
   }
 }

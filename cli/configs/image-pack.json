@@ -1,0 +1,29 @@
+[
+    {
+        "src":{
+            "figmaProjectID": "3SigPKK9cQhANSRQOOgQgO",
+            "page": "Common",
+            "frameName": "32x32"
+          },
+        "dst":{
+            "folder": "Common",
+            "color": "#ff0000",
+            "format": "png",
+            "width": 48
+        }
+          
+    },
+    {
+        "src":{
+            "figmaProjectID": "3SigPKK9cQhANSRQOOgQgO",
+            "page": "Colored Icons",
+            "frameName": "Common"
+          },
+        "dst":{
+            "folder": "Colored Icons",
+            "color": "#ff784b",
+            "format": "svg"
+        }
+          
+    }
+]
