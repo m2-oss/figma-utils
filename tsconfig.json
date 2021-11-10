@@ -1,0 +1,7 @@
+{
+  "extends": "@m2-oss/web-configs/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist"
+  },
+
+}

@@ -1,5 +1,5 @@
-# figma-utils
-Various utilities for working with figma, for exporting icons, styles, etc.
+# figma-cli
+Console commands for working with figma, for exporting icons and pack of icons.
 ## Figma Project for examples
 
 https://www.figma.com/file/3SigPKK9cQhANSRQOOgQgO/
@@ -10,15 +10,7 @@ You need to write figma token in environmental vars. Put the value in `.env` fil
 
 ## Load Minified LoadSchema from Figma
 
-This function load the simplified model from Figma Project. It find pa
-
-### Loading from code:
-
-`
-loadMinifiedSchema(config, figmaToken);
-`
-
-### loading from cli
+This function load the simplified model from Figma Project.
 
 `
 yarn cli load-schema --config '{"figmaProjectID":"3SigPKK9cQhANSRQOOgQgO", "page":"Colored Icons", "frameName":"Common"}'
@@ -30,9 +22,6 @@ yarn cli load-schema --config './cli/configs/load-schema.json'
 ## Loading image from Figma
 
 if you need cache files for loading use CACHE_DIR var in `.env` file.
-### loading from code
-
-`loadImage(config, figmaToken)`
 
 ### loading from cli
 `
@@ -44,10 +33,6 @@ yarn cli load-image --config './cli/configs/load-image.json' "3.svg"
 `
 
 ## Sync Image Package with Figma
-
-### loading from code
-
-`syncImagePack(config, process.env.X_FIGMA_TOKEN, this.targetDir);`
 
 ### loading from cli
 

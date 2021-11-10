@@ -1,0 +1,11 @@
+{
+  "extends": "@m2-oss/web-configs/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "files": true
+  }
+}
