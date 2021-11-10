@@ -17,7 +17,7 @@
     "lint": "eslint 'src/**/*.ts' 'cli/**/*.ts' 'packages/**/*.ts'",
     "format": "eslint --fix 'src/**/*.ts' 'cli/**/*.ts' 'packages/**/*.ts'",
     "cli": "ts-node --project tsconfig.json -r dotenv/config packages/cli/index.ts",
-    "build:packages": "lerna run build",
+    "build": "lerna run build",
     "prepare": "yarn build",
     "prepublishOnly": "yarn lint",
     "typecheck": "yarn tsc --noEmit --incremental false"

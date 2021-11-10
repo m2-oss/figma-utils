@@ -8,7 +8,7 @@ coverage
 build
 build-standalone
 dist
-packages/cli/bin
+bin
 .cache
 target-dir
 
