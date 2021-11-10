@@ -1,0 +1,23 @@
+{
+    "name": "@m2-oss/figma-utils-common",
+    "version": "1.0.0",
+    "description": "Various utilities for working with figma, for extracting icons, styles, etc.",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "repository": "https://github.com/m2-oss/figma-utils.git",
+    "author": "Sergey Chernov <chernov.sergey@gmail.com>",
+    "license": "MIT",
+    "scripts": {
+      "lint": "eslint 'src/**/*.ts'",
+      "format": "eslint --fix 'src/**/*.ts'",
+      "build": "tsc",
+      "prepare": "npm run build",
+      "prepublishOnly": "npm run lint",
+      "typecheck": "yarn tsc --noEmit --incremental false"
+    },
+    "devDependencies": {
+    },
+    "dependencies": {
+    }
+  }
+  

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import md5 from 'md5';
 
-import { SrcImageConfig } from './config';
+import { SrcImageConfig } from './types';
 import { promises as fs } from 'fs';
 import path from 'path';
 

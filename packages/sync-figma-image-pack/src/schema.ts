@@ -2,7 +2,7 @@ import axios from 'axios';
 import md5 from 'md5';
 import Translit from 'cyrillic-to-translit-js';
 
-import { SrcImagePackConfig } from './config';
+import { SrcFigmaImagePackConfig } from './types';
 
 const translit = new Translit();
 
@@ -49,7 +49,10 @@ async function loadFigmaSchema(figmaId: string, xFigmaToken: string) {
     ).data;
 }
 
-export async function loadMinifiedSchema(config: SrcImagePackConfig, xFigmaToken: string): Promise<MinifiedSchema> {
+export async function loadMinifiedFigmaSchema(
+    config: SrcFigmaImagePackConfig,
+    xFigmaToken: string,
+): Promise<MinifiedSchema> {
     const schema = await loadFigmaSchema(config.figmaProjectID, xFigmaToken);
 
     const children = schema.document.children

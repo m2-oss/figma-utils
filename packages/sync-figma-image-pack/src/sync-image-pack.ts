@@ -5,23 +5,24 @@ import Translit from 'cyrillic-to-translit-js';
 
 const translit = new Translit();
 
-import { DstImagePackConfig, ImagePackConfig } from './config';
-import { BoundingBox, loadMinifiedSchema, MinifiedItem, MinifiedSchema } from './schema';
+import { loadFigmaImage } from '@m2-oss/load-figma-image';
+
+import { DstFigmaImagePackConfig, ImageFigmaPackConfig } from './types';
+import { BoundingBox, loadMinifiedFigmaSchema, MinifiedItem, MinifiedSchema } from './schema';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { loadImage } from './load-image';
 
-export const schemaKey: (imagePack: ImagePackConfig) => string = (imagePack: ImagePackConfig) =>
+export const schemaKey: (imagePack: ImageFigmaPackConfig) => string = (imagePack: ImageFigmaPackConfig) =>
     md5(`${JSON.stringify(imagePack)}`);
 
-export const frameKey: (item: MinifiedItem, config: ImagePackConfig) => string = (
+export const frameKey: (item: MinifiedItem, config: ImageFigmaPackConfig) => string = (
     item: MinifiedItem,
-    config: ImagePackConfig,
+    config: ImageFigmaPackConfig,
 ) => md5(`${item.hash}${JSON.stringify(config)}`);
 
 async function saveSchemasToCache(
     minifiedSchemas: MinifiedSchema[],
-    configs: ImagePackConfig[],
+    configs: ImageFigmaPackConfig[],
     cacheDir: string,
 ): Promise<void> {
     if (minifiedSchemas.length !== configs.length) {
@@ -40,7 +41,7 @@ async function saveSchemasToCache(
     await Promise.all(fileWrites);
 }
 
-async function loadHashMap(configs: ImagePackConfig[], cacheDir: string): Promise<Map<string, string>> {
+async function loadHashMap(configs: ImageFigmaPackConfig[], cacheDir: string): Promise<Map<string, string>> {
     const map: Map<string, string> = new Map<string, string>();
     if (!cacheDir) {
         return map;
@@ -59,10 +60,10 @@ async function loadHashMap(configs: ImagePackConfig[], cacheDir: string): Promis
     return map;
 }
 
-async function loadSchemasFromFigma(configs: ImagePackConfig[], xFigmaToken: string): Promise<MinifiedSchema[]> {
+async function loadSchemasFromFigma(configs: ImageFigmaPackConfig[], xFigmaToken: string): Promise<MinifiedSchema[]> {
     const schemaLoaders = [];
     for (const i of configs) {
-        const loader = loadMinifiedSchema(i.src, xFigmaToken);
+        const loader = loadMinifiedFigmaSchema(i.src, xFigmaToken);
         if (loader) {
             schemaLoaders.push(loader);
         }
@@ -81,7 +82,7 @@ interface DstSizes {
     height: number;
     scale: number;
 }
-function getDstSizes(dstConfig: DstImagePackConfig, absoluteBoundingBox: BoundingBox): DstSizes {
+function getDstSizes(dstConfig: DstFigmaImagePackConfig, absoluteBoundingBox: BoundingBox): DstSizes {
     let scale = 1;
     let width = absoluteBoundingBox.width;
     let height = absoluteBoundingBox.height;
@@ -97,15 +98,15 @@ function getDstSizes(dstConfig: DstImagePackConfig, absoluteBoundingBox: Boundin
     return { scale, width, height };
 }
 
-export function calculateFileName(config: DstImagePackConfig, item: MinifiedItem, dstSizes: DstSizes): string {
+export function calculateFileName(config: DstFigmaImagePackConfig, item: MinifiedItem, dstSizes: DstSizes): string {
     return `${translit.transform(item.name)}-${dstSizes.width}x${dstSizes.height}.${config.format}`.toLowerCase();
 }
 
-async function downloadImage(config: ImagePackConfig, item: MinifiedItem, xFigmaToken: string, targetDir: string) {
+async function downloadImage(config: ImageFigmaPackConfig, item: MinifiedItem, xFigmaToken: string, targetDir: string) {
     const folder = path.resolve(targetDir, config.dst.folder);
     await fs.mkdir(folder, { recursive: true });
     const dstSizes = getDstSizes(config.dst, item.absoluteBoundingBox);
-    let buffer = await loadImage(
+    let buffer = await loadFigmaImage(
         {
             figmaProjectID: config.src.figmaProjectID,
             frameID: item.id,
@@ -142,7 +143,11 @@ async function downloadImage(config: ImagePackConfig, item: MinifiedItem, xFigma
     }
 }
 
-export async function syncImagePack(configs: ImagePackConfig[], xFigmaToken: string, targetDir: string): Promise<void> {
+export async function syncImagePack(
+    configs: ImageFigmaPackConfig[],
+    xFigmaToken: string,
+    targetDir: string,
+): Promise<void> {
     const cacheDir: string = process.env.CACHE_DIR || '';
     await fs.mkdir(targetDir, { recursive: true });
 
